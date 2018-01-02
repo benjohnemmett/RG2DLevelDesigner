@@ -1,0 +1,5 @@
+bin
+*.class
+*.bkp
+*~
+.DS_Store
