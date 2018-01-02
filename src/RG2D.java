@@ -17,9 +17,6 @@ public class RG2D {
 		db.LoadSpriteDirectory();
 		
 		LBLevel l = db.LevelArray.get(il);
-
-		l.addSprite(0, 10, 0);
-		l.addSprite(1, 100, 50);
 		
 		db.print();
 		// End test stuff

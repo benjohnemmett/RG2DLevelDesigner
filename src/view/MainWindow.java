@@ -28,11 +28,13 @@ public class MainWindow extends JFrame{
 	private MouseAdapter ma = new MouseAdapter() {
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			
 			MainWindow win = (MainWindow) e.getComponent();
+			int activeSprite = win.swin.spriteList.getSelectedIndex();
+			if(activeSprite < 0){ return; }
 			
 			LBDatabase db = LBDatabase.getInstance();
 			LBLevel l = db.LevelArray.get(win.activeLevel);
-			int activeSprite = win.swin.spriteList.getSelectedIndex();
 			
 			l.addSprite(activeSprite, e.getX(), e.getY());
 			
@@ -89,8 +91,6 @@ public class MainWindow extends JFrame{
                 	JSprite js = (JSprite) e.getComponent();
                 	System.out.println("Clicked point " + js.getLocation() + ", width" + js.getWidth());
                 	
-                	// Set back to correct size TODO: Determine where incorrect size is set
-                	js.setSize(js.getImageSize());
                 	// Check bounds
                     java.awt.Point p = new java.awt.Point(e.getLocationOnScreen());
                     SwingUtilities.convertPointFromScreen(p, e.getComponent());
@@ -116,14 +116,10 @@ public class MainWindow extends JFrame{
                 	System.out.println("Point Before" + js.getLocation() );
                 	
                 	Point p = js.getLocation();
-                	
-                	p.translate(x_end - x_start, y_end - y_start);
-                	
-                	js.setLocation(p);
+                	js.myX = p.x + (x_end - x_start);
+                	js.myY = p.y + (y_end - y_start);
                 	
                 	System.out.println("Point After" + js.getLocation() );
-			
-                	System.out.println("Released " + this);
                 	
                 	repaint();
                 	
@@ -137,8 +133,8 @@ public class MainWindow extends JFrame{
                 	JSprite js = (JSprite) e.getComponent();
                 	
                 	//Update the database
-                	js.si.x = (int) js.getLocation().getX();
-                	js.si.y = (int) js.getLocation().getY();
+                	js.si.x = (int) js.myX;
+                	js.si.y = (int) js.myY;
                 	
                 	repaint();
                 	
@@ -177,6 +173,8 @@ class JSprite extends JPanel {
 	  private Image img;
 	  public int dbIndex;
 	  public LBSpriteInstance si;
+	  public int myX;
+	  public int myY;
 
 
 	  public JSprite(Image img, LBSpriteInstance si) {
@@ -184,12 +182,16 @@ class JSprite extends JPanel {
 	    this.si = si;
 	    Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
 
-	    this.setLocation(new Point(si.x, si.y));
+	    this.myX = si.x;
+	    this.myY = si.y;
 	    
 	    setSize(size);
 	  }
 
 	  public void paintComponent(Graphics g) {
+		  this.setSize(this.getImageSize());
+		  this.setLocation(myX, myY);
+		  
 		  super.paintComponent(g);
 		  g.drawImage(img, 0, 0, null);
 	  }
