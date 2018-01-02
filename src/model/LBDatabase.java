@@ -1,5 +1,7 @@
 package model;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 /** 
@@ -48,6 +50,7 @@ public class LBDatabase {
     	
     }
     
+    
     public int CreateNewLevel(String name, int number) {
     	
     	LBLevel l = new LBLevel(name, number);
@@ -57,6 +60,22 @@ public class LBDatabase {
     	}
     	
     	return -99;
+    	
+    }
+    
+    public void LoadSpriteDirectory() {
+    	File dir = new File(this.GamePath + "/components/sprites/");
+    	File[] files = dir.listFiles(new FilenameFilter() {
+    	    public boolean accept(File dir, String name) {
+    	        return name.toLowerCase().endsWith(".png");
+    	    }
+    	});
+    	
+    	for(File f : files){
+    		System.out.println(f.getName());
+    		this.CreateNewSprite(f.getName(), 0, 0);
+    	}
+    	
     	
     }
 

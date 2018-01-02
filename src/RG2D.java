@@ -7,8 +7,6 @@ public class RG2D {
 
 	public static void main(String args[]){
 		
-		MainWindow win = new MainWindow();
-		SpriteWindow swin = new SpriteWindow();
 		
 		LBDatabase db = LBDatabase.getInstance();
 		
@@ -16,14 +14,20 @@ public class RG2D {
 		db.GamePath = "/Users/ben/Documents/workspace/FiretruckGame2D/";
 		int il = db.CreateNewLevel("Level_01", 1);
 		
-		int is = db.CreateNewSprite("texture_brick01_60p.png", 60, 60);
+		db.LoadSpriteDirectory();
 		
 		LBLevel l = db.LevelArray.get(il);
 
-		l.addSprite(is, 10, 0);
-		l.addSprite(is, 100, 50);
+		l.addSprite(0, 10, 0);
+		l.addSprite(1, 100, 50);
 		
 		db.print();
+		// End test stuff
+		
+		MainWindow win = new MainWindow();
+		SpriteWindow swin = new SpriteWindow();
+		
+		win.swin = swin;
 		
 		win.DrawLevel(l);
 		

@@ -29,11 +29,12 @@ public class MainWindow extends JFrame{
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			MainWindow win = (MainWindow) e.getComponent();
+			
 			LBDatabase db = LBDatabase.getInstance();
-			
 			LBLevel l = db.LevelArray.get(win.activeLevel);
+			int activeSprite = win.swin.spriteList.getSelectedIndex();
 			
-			l.addSprite(0, e.getX(), e.getY());
+			l.addSprite(activeSprite, e.getX(), e.getY());
 			
 			win.DrawLevel(l);
 			
@@ -134,6 +135,8 @@ public class MainWindow extends JFrame{
                 public void mouseReleased(MouseEvent e) {
 
                 	JSprite js = (JSprite) e.getComponent();
+                	
+                	//Update the database
                 	js.si.x = (int) js.getLocation().getX();
                 	js.si.y = (int) js.getLocation().getY();
                 	

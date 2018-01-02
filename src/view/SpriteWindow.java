@@ -1,11 +1,20 @@
 package view;
 
+import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JList;
+
+import model.LBDatabase;
+import model.LBSprite;
 
 public class SpriteWindow extends JFrame{
 
 	public int width = 240;
-	public int height = 720; 
+	public int height = 720;
+	public JList spriteList;
+	public int activeSprite;
 
 	public SpriteWindow(int width, int height) {
 
@@ -19,11 +28,28 @@ public class SpriteWindow extends JFrame{
 	}
 
 	public SpriteWindow() {
-		// TODO Auto-generated constructor stub
 		this.setVisible(true);
 		this.setSize(this.width, this.height);
+		
+		spriteList = new JList();
+		
+		this.add(spriteList);
+		
+		DisplaySpriteList();
 		  
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	
+	public void DisplaySpriteList(){
+		LBDatabase db = LBDatabase.getInstance();
+		
+		DefaultListModel<String> spriteNames = new DefaultListModel<String>();
+		
+		for(LBSprite s :db.SpriteArray){
+			spriteNames.addElement(s.name);
+		}
+		
+		spriteList.setModel(spriteNames);
 	}
 
 }
