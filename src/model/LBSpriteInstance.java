@@ -1,12 +1,17 @@
 package model;
 
-public class LBSpriteInstance {
+public class LBSpriteInstance implements java.io.Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9071085102756474118L;
 	
 	public int x;
 	public int y;
 	public int dbIndex;
 
-	public LBSpriteInstance() {
+	public LBSpriteInstance()  {
 		// TODO Auto-generated constructor stub
 	}
 

@@ -9,8 +9,13 @@ import java.util.ArrayList;
  * @author ben
  *	Singleton database to hold all levels and sprites
  */
-public class LBDatabase {
+public class LBDatabase implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7477137254720794479L;
+	
 	private static LBDatabase myDB;
 	public String GamePath; // Path to the game being built
 	public ArrayList<LBLevel> LevelArray = new ArrayList<LBLevel>();
@@ -26,6 +31,10 @@ public class LBDatabase {
         return myDB;
     }
     
+    public static void setInstance(LBDatabase db){
+    	myDB = db;
+    }
+    
     public void print(){
     	System.out.println("Levels : ");
     	for(LBLevel l : this.LevelArray){
@@ -38,9 +47,9 @@ public class LBDatabase {
     	}
     }
     
-    public int CreateNewSprite(String name, int width, int height){
+    public int CreateNewSprite(String name){
     	
-    	LBSprite s = new LBSprite(name, width, height);
+    	LBSprite s = new LBSprite(name);
     	
     	if( this.SpriteArray.add(s)){
     		return this.SpriteArray.size() -1;
@@ -49,7 +58,6 @@ public class LBDatabase {
     	return -99;
     	
     }
-    
     
     public int CreateNewLevel(String name, int number) {
     	
@@ -73,7 +81,7 @@ public class LBDatabase {
     	
     	for(File f : files){
     		System.out.println(f.getName());
-    		this.CreateNewSprite(f.getName(), 0, 0);
+    		this.CreateNewSprite(f.getName());
     	}
     	
     	

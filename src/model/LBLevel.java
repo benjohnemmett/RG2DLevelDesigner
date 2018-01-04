@@ -2,7 +2,12 @@ package model;
 
 import java.util.ArrayList;
 
-public class LBLevel {
+public class LBLevel implements java.io.Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5467844722801133491L;
 	
 	public String name;
 	public int number;

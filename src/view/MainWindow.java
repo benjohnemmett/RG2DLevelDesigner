@@ -4,14 +4,19 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import Utils.LBDataUtils;
+import model.LBCodeGen;
 import model.LBDatabase;
 import model.LBLevel;
 import model.LBSpriteInstance;
@@ -24,6 +29,7 @@ public class MainWindow extends JFrame{
 	public int height = 720;
 	public int activeLevel = 0;
 	public SpriteWindow swin;
+	private LBDatabase db = LBDatabase.getInstance();
 	
 	private MouseAdapter ma = new MouseAdapter() {
 		@Override
@@ -33,7 +39,6 @@ public class MainWindow extends JFrame{
 			int activeSprite = win.swin.spriteList.getSelectedIndex();
 			if(activeSprite < 0){ return; }
 			
-			LBDatabase db = LBDatabase.getInstance();
 			LBLevel l = db.LevelArray.get(win.activeLevel);
 			
 			l.addSprite(activeSprite, e.getX(), e.getY());
@@ -43,19 +48,78 @@ public class MainWindow extends JFrame{
 			System.out.println("Add new Object! " + e.getX() + ", " + e.getY());
 		}
 	};
+	
+	private KeyListener kl = new KeyListener() {
 
-	public MainWindow(int width, int height) {
+		@Override
+		public void keyTyped(KeyEvent e) {
+			System.out.println("Key Typed " + e.getKeyChar());
 
-		this.width = width;
-		this.height = height;
+			if(e.getKeyChar() == 's'){
+				System.out.println("Saving Data.");
+				
+				LBDatabase db = LBDatabase.getInstance();
+				
+				try {
+					LBDataUtils.writeData(db.GamePath + "Data.bin");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			} else if (e.getKeyChar() == 'o') {
+				
+				try {
+					LBDataUtils.readData(db.GamePath + "Data.bin");
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				MainWindow win = (MainWindow)e.getSource();
+				win.DrawLevel(db.LevelArray.get(0));
+				
+			} else {
+				System.out.println("Writing Code.");
+				try {
+					LBCodeGen.GenCode();
+				} catch (IOException e1) {
+					System.out.println("Failed to generate brightscript code!");
+					e1.printStackTrace();
+				}
+			}
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			System.out.println("Key Pressed");
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			System.out.println("Key Released");
+			
+		}
 		
-		this.setVisible(true);
-		this.setSize(this.width, this.height);
-		  
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		addMouseListener(ma);
-	}
+	};
+
+//	public MainWindow(int width, int height) {
+//
+//		this.width = width;
+//		this.height = height;
+//		
+//		this.setVisible(true);
+//		this.setSize(this.width, this.height);
+//		  
+//		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		
+//		this.addMouseListener(ma);
+//		this.addKeyListener(kl);
+//	}
 
 	public MainWindow() {
 		
@@ -65,18 +129,17 @@ public class MainWindow extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		addMouseListener(ma);
+		this.addKeyListener(kl);
 	}
 	
 	public void DrawLevel(LBLevel l) {
 		
 		this.getContentPane().removeAll(); //// **** Remember this pain in the neck!! Calling this.removeAll() will remove the rootPane & disallow any further rendering in this JFRame
 		
-		LBDatabase db = LBDatabase.getInstance();
-		
 		for(LBSpriteInstance si : l.SpriteInstanceArray){
 			
 			// TODO Do something smarter here to cache sprite image data
-			String path = db.GamePath + "components/sprites/" + db.SpriteArray.get(si.dbIndex).name;
+			String path = db.GamePath + "components/sprites/" + db.SpriteArray.get(si.dbIndex).filename;
 			
 			JSprite sprite = new JSprite(new ImageIcon(path).getImage(), si );
 			
@@ -175,21 +238,23 @@ class JSprite extends JPanel {
 	  public LBSpriteInstance si;
 	  public int myX;
 	  public int myY;
+	  public Dimension mySize;
+	  private LBDatabase db = LBDatabase.getInstance();
 
 
 	  public JSprite(Image img, LBSpriteInstance si) {
 	    this.img = img;
 	    this.si = si;
-	    Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
+	    this.mySize = new Dimension(db.SpriteArray.get(si.dbIndex).width, db.SpriteArray.get(si.dbIndex).height);
 
 	    this.myX = si.x;
 	    this.myY = si.y;
-	    
-	    setSize(size);
+
+	    setSize(this.mySize);
 	  }
 
 	  public void paintComponent(Graphics g) {
-		  this.setSize(this.getImageSize());
+		  this.setSize(this.mySize);
 		  this.setLocation(myX, myY);
 		  
 		  super.paintComponent(g);
