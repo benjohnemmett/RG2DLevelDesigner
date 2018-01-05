@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Utils.LBDataUtils;
+import control.MainController;
 import model.LBCodeGen;
 import model.LBDatabase;
 import model.LBLevel;
@@ -23,27 +24,28 @@ import model.LBSpriteInstance;
 
 // Based on help from http://mrbool.com/showing-images-in-a-swing-jframe-in-java/24594
 
-public class MainWindow extends JFrame{
+public class LayoutWindow extends JFrame{
 	
 	public int width = 1280;
 	public int height = 720;
 	public int activeLevel = 0;
 	public SpriteWindow swin;
 	private LBDatabase db = LBDatabase.getInstance();
+	public LBLevel level;
+	
+	public MainController mc;
 	
 	private MouseAdapter ma = new MouseAdapter() {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			
-			MainWindow win = (MainWindow) e.getComponent();
-			int activeSprite = win.swin.spriteList.getSelectedIndex();
+			LayoutWindow win = (LayoutWindow) e.getComponent();
+			int activeSprite = win.mc.getSelectedSpriteIndex();
 			if(activeSprite < 0){ return; }
 			
-			LBLevel l = db.LevelArray.get(win.activeLevel);
+			level.addSprite(activeSprite, e.getX(), e.getY());
 			
-			l.addSprite(activeSprite, e.getX(), e.getY());
-			
-			win.DrawLevel(l);
+			win.DrawLevel();
 			
 			System.out.println("Add new Object! " + e.getX() + ", " + e.getY());
 		}
@@ -56,31 +58,17 @@ public class MainWindow extends JFrame{
 			System.out.println("Key Typed " + e.getKeyChar());
 
 			if(e.getKeyChar() == 's'){
+				
 				System.out.println("Saving Data.");
-				
-				LBDatabase db = LBDatabase.getInstance();
-				
-				try {
-					LBDataUtils.writeData(db.GamePath + "Data.bin");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
+				db.saveDatabase(db.GamePath + "Data.bin");
+
 			} else if (e.getKeyChar() == 'o') {
 				
-				try {
-					LBDataUtils.readData(db.GamePath + "Data.bin");
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				MainWindow win = (MainWindow)e.getSource();
-				win.DrawLevel(db.LevelArray.get(0));
+				db.loadDatabase(db.GamePath + "Data.bin");
+
+				LayoutWindow win = (LayoutWindow)e.getSource();
+				win.level = db.LevelArray.get(0);
+				win.DrawLevel();
 				
 			} else {
 				System.out.println("Writing Code.");
@@ -107,21 +95,9 @@ public class MainWindow extends JFrame{
 		
 	};
 
-//	public MainWindow(int width, int height) {
-//
-//		this.width = width;
-//		this.height = height;
-//		
-//		this.setVisible(true);
-//		this.setSize(this.width, this.height);
-//		  
-//		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-//		
-//		this.addMouseListener(ma);
-//		this.addKeyListener(kl);
-//	}
-
-	public MainWindow() {
+	public LayoutWindow(MainController mc) {
+		
+		this.mc = mc;
 		
 		this.setVisible(true);
 		this.setSize(this.width, this.height);
@@ -132,11 +108,11 @@ public class MainWindow extends JFrame{
 		this.addKeyListener(kl);
 	}
 	
-	public void DrawLevel(LBLevel l) {
+	public void DrawLevel() {
 		
 		this.getContentPane().removeAll(); //// **** Remember this pain in the neck!! Calling this.removeAll() will remove the rootPane & disallow any further rendering in this JFRame
 		
-		for(LBSpriteInstance si : l.SpriteInstanceArray){
+		for(LBSpriteInstance si : level.SpriteInstanceArray){
 			
 			// TODO Do something smarter here to cache sprite image data
 			String path = db.GamePath + "components/sprites/" + db.SpriteArray.get(si.dbIndex).filename;

@@ -1,7 +1,13 @@
 package model;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /** 
@@ -83,8 +89,105 @@ public class LBDatabase implements java.io.Serializable {
     		System.out.println(f.getName());
     		this.CreateNewSprite(f.getName());
     	}
+    }
+    
+    public void saveDatabase(String filename) {
     	
     	
+		FileOutputStream f_out = null;
+		try {
+			f_out = new  FileOutputStream(filename);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		// Write object with ObjectOutputStream
+		ObjectOutputStream obj_out = null;
+		try {
+			obj_out = new ObjectOutputStream (f_out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Write object out to disk
+		try {
+			obj_out.writeObject(this.GamePath);
+			obj_out.writeObject(this.SpriteArray);
+			obj_out.writeObject(this.LevelArray);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public void loadDatabase(String filename){
+		// Read from disk using FileInputStream
+		FileInputStream f_in = null;
+		try {
+			f_in = new FileInputStream(filename);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		// Read object using ObjectInputStream
+		ObjectInputStream obj_in = null;
+		try {
+			obj_in = new ObjectInputStream (f_in);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Read Game Path
+		Object obj1 = null;
+		try {
+			obj1 = obj_in.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (obj1 instanceof String)
+		{
+			// Cast object
+			this.GamePath = (String) obj1;
+		}
+
+		// Read Sprite Array
+		Object obj2 = null;
+		try {
+			obj2 = obj_in.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (obj2 instanceof ArrayList<?>)
+		{
+			// Cast object
+			this.SpriteArray = (ArrayList<LBSprite>) obj2;
+		}
+		
+
+
+		// Read Level Array
+		Object obj3 = null;
+		try {
+			obj3 = obj_in.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (obj3 instanceof ArrayList<?>)
+		{
+			// Cast object
+			this.LevelArray = (ArrayList<LBLevel>) obj3;
+		}
+		
+		
+		
     }
 
 	public static void main(String[] args) {

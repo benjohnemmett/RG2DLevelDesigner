@@ -6,6 +6,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 
+import control.MainController;
 import model.LBDatabase;
 import model.LBSprite;
 
@@ -15,19 +16,23 @@ public class SpriteWindow extends JFrame{
 	public int height = 720;
 	public JList spriteList;
 	public int activeSprite;
+	public MainController mc;
 
-	public SpriteWindow(int width, int height) {
+//	public SpriteWindow(int width, int height) {
+//
+//		this.width = width;
+//		this.height = height;
+//		
+//		this.setVisible(true);
+//		this.setSize(this.width, this.height);
+//		  
+//		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+//	}
 
-		this.width = width;
-		this.height = height;
+	public SpriteWindow(MainController mc) {
 		
-		this.setVisible(true);
-		this.setSize(this.width, this.height);
-		  
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-	}
-
-	public SpriteWindow() {
+		this.mc = mc;
+		
 		this.setVisible(true);
 		this.setSize(this.width, this.height);
 		
