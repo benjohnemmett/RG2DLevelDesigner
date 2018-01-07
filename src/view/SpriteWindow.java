@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -14,20 +16,31 @@ public class SpriteWindow extends JFrame{
 
 	public int width = 240;
 	public int height = 720;
-	public JList spriteList;
+	public JList<String> spriteList;
 	public int activeSprite;
 	public MainController mc;
+	
+	private KeyListener kl = new KeyListener() {
 
-//	public SpriteWindow(int width, int height) {
-//
-//		this.width = width;
-//		this.height = height;
-//		
-//		this.setVisible(true);
-//		this.setSize(this.width, this.height);
-//		  
-//		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-//	}
+		@Override
+		public void keyTyped(KeyEvent e) {
+			System.out.println("SWIN:Key Typed " + e.getKeyChar());
+			mc.keyTypedHandler(e);
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			System.out.println("SWIN:Key Pressed");
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			System.out.println("SWIN:Key Released");
+			
+		}
+		
+	};
 
 	public SpriteWindow(MainController mc) {
 		
@@ -35,14 +48,17 @@ public class SpriteWindow extends JFrame{
 		
 		this.setVisible(true);
 		this.setSize(this.width, this.height);
+		this.setLocation(180, 0);
 		
-		spriteList = new JList();
+		spriteList = new JList<String>();
 		
 		this.add(spriteList);
 		
 		DisplaySpriteList();
 		  
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+		this.addKeyListener(kl);
 	}
 	
 	public void DisplaySpriteList(){

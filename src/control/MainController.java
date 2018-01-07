@@ -3,6 +3,8 @@ package control;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import javax.swing.event.ListSelectionEvent;
+
 import model.LBCodeGen;
 import model.LBDatabase;
 import view.LayoutWindow;
@@ -18,21 +20,22 @@ public class MainController {
 
 	public MainController() {
 
-		this.lwin = new LayoutWindow(this);
-		this.swin = new SpriteWindow(this);
 		this.vwin = new LevelWindow(this);
+		this.swin = new SpriteWindow(this);
+		this.lwin = new LayoutWindow(this);
 		
-		//Test Stuff
 		db = LBDatabase.getInstance();
 		
 		// Test stuff
 		db.GamePath = "/Users/ben/Documents/workspace/FiretruckGame2D/";
 		db.LoadSpriteDirectory();
-		swin.DisplaySpriteList();
 		
 		int il = db.CreateNewLevel("Level_01", 1);
 		
 		lwin.level = db.LevelArray.get(il);
+		
+		swin.DisplaySpriteList();
+		vwin.DisplayLevelList();
 		
 	}
 	
@@ -51,7 +54,11 @@ public class MainController {
 			//Draw first level by default
 			// TODO get level selected my level window or, set level window selection to 0.
 			lwin.level = db.LevelArray.get(0);
+			
+			//UPdate views
 			lwin.DrawLevel();
+			swin.DisplaySpriteList();
+			vwin.DisplayLevelList();
 			
 		} else {
 			System.out.println("Writing Code.");
@@ -62,6 +69,17 @@ public class MainController {
 				e1.printStackTrace();
 			}
 		}
+	}
+	public void levelSelectionChangeHandler(ListSelectionEvent e) {
+
+		System.out.println("MC: Level selection changed");
+		
+		//Update level
+		if(vwin.activeLevel > 0){
+			lwin.level = db.LevelArray.get(vwin.activeLevel);
+			lwin.DrawLevel();
+		}
+		
 	}
 	
 	
@@ -89,6 +107,8 @@ public class MainController {
 
 		return swin.spriteList.getSelectedIndex();
 	}
+
+
 	
 	
 
