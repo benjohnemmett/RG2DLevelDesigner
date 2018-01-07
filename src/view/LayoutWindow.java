@@ -55,30 +55,31 @@ public class LayoutWindow extends JFrame{
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-			System.out.println("Key Typed " + e.getKeyChar());
+			System.out.println("LWIN:Key Typed " + e.getKeyChar());
+			mc.keyTypedHandler(e);
 
-			if(e.getKeyChar() == 's'){
-				
-				System.out.println("Saving Data.");
-				db.saveDatabase(db.GamePath + "Data.bin");
-
-			} else if (e.getKeyChar() == 'o') {
-				
-				db.loadDatabase(db.GamePath + "Data.bin");
-
-				LayoutWindow win = (LayoutWindow)e.getSource();
-				win.level = db.LevelArray.get(0);
-				win.DrawLevel();
-				
-			} else {
-				System.out.println("Writing Code.");
-				try {
-					LBCodeGen.GenCode();
-				} catch (IOException e1) {
-					System.out.println("Failed to generate brightscript code!");
-					e1.printStackTrace();
-				}
-			}
+//			if(e.getKeyChar() == 's'){
+//				
+//				System.out.println("Saving Data.");
+//				db.saveDatabase(db.GamePath + "Data.bin");
+//
+//			} else if (e.getKeyChar() == 'o') {
+//				
+//				db.loadDatabase(db.GamePath + "Data.bin");
+//
+//				LayoutWindow win = (LayoutWindow)e.getSource();
+//				win.level = db.LevelArray.get(0);
+//				win.DrawLevel();
+//				
+//			} else {
+//				System.out.println("Writing Code.");
+//				try {
+//					LBCodeGen.GenCode();
+//				} catch (IOException e1) {
+//					System.out.println("Failed to generate brightscript code!");
+//					e1.printStackTrace();
+//				}
+//			}
 		}
 
 		@Override

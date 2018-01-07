@@ -10,6 +10,7 @@ public class LBCodeGen {
 	}
 	
 	public static void GenCode() throws IOException{
+		
 		GenLoadSprites();
 		GenLoadLevel();
 	}
@@ -49,7 +50,26 @@ public class LBCodeGen {
 
 	}
 	
-	private static void GenLoadSprites(){
+	private static void GenLoadSprites() throws IOException{
+		LBDatabase db = LBDatabase.getInstance();
+		
+		String filePath = db.GamePath + "/source/RG2DLoadSprites.brs";
+		FileWriter fw = new FileWriter(filePath);
+		
+		// Start function
+		fw.write("function rg2dLoadSprites() as void\n");
+		fw.write("\tg = GetGlobalAA()\n");
+		
+		// TODO make a smarter way of determining which sprites were actually used and only write those out
+		for(LBSprite s : db.SpriteArray){
+			fw.write("\tbm_" + s.name + " = CreateObject(\"roBitmap\", \"pkg:/components/sprites/" + s.filename + "\")\n");
+			fw.write("\tg.r_" + s.name + " = CreateObject(\"roRegion\", bm_" + s.name + ", 0, 0, " + s.width + ", " + s.height + ")\n");
+			fw.write("\n");
+		}
+		
+		fw.write("end function\n");
+		
+		fw.close();
 		
 	}
 
