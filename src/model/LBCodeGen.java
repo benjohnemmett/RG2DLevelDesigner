@@ -33,7 +33,7 @@ public class LBCodeGen {
 			fw.write("\tif(level = " + l.number + ") then\n");
 			
 			for(LBSpriteInstance si : l.SpriteInstanceArray){
-				fw.write("\t\tsSprite = g.compositor.NewSprite(" + si.x + ", " + si.y + ", " + "g.r" + db.SpriteArray.get(si.dbIndex).name + ")\n");
+				fw.write("\t\tsSprite = g.compositor.NewSprite(" + si.x + ", " + si.y + ", " + "g.r_" + db.SpriteArray.get(si.dbIndex).name + ")\n");
 				fw.write("\t\tpoPhysObj = physObj(sSprite, invalid)\n");
 				//TODO add capability to set collision groups
 				 
