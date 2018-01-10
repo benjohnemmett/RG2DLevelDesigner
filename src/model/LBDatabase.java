@@ -26,6 +26,7 @@ public class LBDatabase implements java.io.Serializable {
 	public String GamePath; // Path to the game being built
 	public ArrayList<LBLevel> LevelArray = new ArrayList<LBLevel>();
 	public ArrayList<LBSprite> SpriteArray = new ArrayList<LBSprite>();
+	public ArrayList<LBGroup> GroupArray = new ArrayList<LBGroup>();
 	
 	private LBDatabase() {
 	}
@@ -65,6 +66,15 @@ public class LBDatabase implements java.io.Serializable {
     	
     }
     
+    public int CreateNewGroup(String name){
+    	LBGroup g = new LBGroup(name);
+    	
+    	if(this.GroupArray.add(g)){
+    		return this.GroupArray.size() - 1;
+    	}
+    	return -99;
+    }
+    
     public int CreateNewLevel(String name, int number) {
     	
     	LBLevel l = new LBLevel(name, number);
@@ -92,8 +102,7 @@ public class LBDatabase implements java.io.Serializable {
     }
     
     public void saveDatabase(String filename) {
-    	
-    	
+
 		FileOutputStream f_out = null;
 		try {
 			f_out = new  FileOutputStream(filename);

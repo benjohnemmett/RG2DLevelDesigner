@@ -15,7 +15,7 @@ import model.LBSprite;
 public class SpriteWindow extends JFrame{
 
 	public int width = 240;
-	public int height = 720;
+	public int height = 300;
 	public JList<String> spriteList;
 	public int activeSprite;
 	public MainController mc;
@@ -48,7 +48,7 @@ public class SpriteWindow extends JFrame{
 		
 		this.setVisible(true);
 		this.setSize(this.width, this.height);
-		this.setLocation(180, 0);
+		this.setLocation(0, 0);
 		
 		spriteList = new JList<String>();
 		

@@ -20,12 +20,7 @@ public class LBSprite implements java.io.Serializable {
 	public int height;
 	public int width;
 	private LBDatabase db = LBDatabase.getInstance();
-	//public Image img;
-	
-	@Deprecated
-	public String imagePath; //Path to image for displaying this object
-	@Deprecated
-	public String buildPath; // Path to use when building Brightscript code
+	public LBGroup group = null;
 	
 	public LBSprite(String filename) {
 		

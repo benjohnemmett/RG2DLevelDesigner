@@ -7,6 +7,7 @@ import javax.swing.event.ListSelectionEvent;
 
 import model.LBCodeGen;
 import model.LBDatabase;
+import view.GroupWindow;
 import view.LayoutWindow;
 import view.LevelWindow;
 import view.SpriteWindow;
@@ -16,6 +17,7 @@ public class MainController {
 	public LayoutWindow lwin;
 	public SpriteWindow swin;
 	public LevelWindow vwin;
+	public GroupWindow gwin;
 	public LBDatabase db;
 
 	public MainController() {
@@ -23,6 +25,7 @@ public class MainController {
 		this.vwin = new LevelWindow(this);
 		this.swin = new SpriteWindow(this);
 		this.lwin = new LayoutWindow(this);
+		this.gwin = new GroupWindow(this);
 		
 		db = LBDatabase.getInstance();
 		

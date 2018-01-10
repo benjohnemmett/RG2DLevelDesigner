@@ -18,7 +18,7 @@ public class LevelWindow extends JFrame{
 	
 
 	public int width = 240;
-	public int height = 720;
+	public int height = 300;
 	public JList<String> levelList;
 	public int activeLevel;
 	public MainController mc;
@@ -51,6 +51,7 @@ public class LevelWindow extends JFrame{
 	
 		this.setVisible(true);
 		this.setSize(this.width, this.height);
+		this.setLocation(0, 300);
 		
 		levelList = new JList<String>();
 		this.add(levelList);

@@ -102,7 +102,7 @@ public class LayoutWindow extends JFrame{
 		
 		this.setVisible(true);
 		this.setSize(this.width, this.height);
-		this.setLocation(360, 0);
+		this.setLocation(240, 0);
 		  
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
