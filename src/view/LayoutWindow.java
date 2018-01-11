@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -32,6 +33,7 @@ public class LayoutWindow extends JFrame{
 	public SpriteWindow swin;
 	private LBDatabase db = LBDatabase.getInstance();
 	public LBLevel level;
+	public LBSpriteInstance selectedSprite = null;
 	
 	public MainController mc;
 	
@@ -58,28 +60,6 @@ public class LayoutWindow extends JFrame{
 			System.out.println("LWIN:Key Typed " + e.getKeyChar());
 			mc.keyTypedHandler(e);
 
-//			if(e.getKeyChar() == 's'){
-//				
-//				System.out.println("Saving Data.");
-//				db.saveDatabase(db.GamePath + "Data.bin");
-//
-//			} else if (e.getKeyChar() == 'o') {
-//				
-//				db.loadDatabase(db.GamePath + "Data.bin");
-//
-//				LayoutWindow win = (LayoutWindow)e.getSource();
-//				win.level = db.LevelArray.get(0);
-//				win.DrawLevel();
-//				
-//			} else {
-//				System.out.println("Writing Code.");
-//				try {
-//					LBCodeGen.GenCode();
-//				} catch (IOException e1) {
-//					System.out.println("Failed to generate brightscript code!");
-//					e1.printStackTrace();
-//				}
-//			}
 		}
 
 		@Override
@@ -121,22 +101,38 @@ public class LayoutWindow extends JFrame{
 			
 			JSprite sprite = new JSprite(new ImageIcon(path).getImage(), si );
 			
+			if(this.selectedSprite == si){
+				//System.out.println(" * Found Selected sprite");
+				sprite.isSelected = true;
+			}
 			
 			MouseAdapter ma = new MouseAdapter() {
 				
 				private int x_start;
 				private int y_start;
 				
+				@Override
+				public void mouseClicked(MouseEvent e){
+                	JSprite js = (JSprite) e.getComponent();
+
+                    LayoutWindow lwin = ((LayoutWindow)((view.JSprite) e.getComponent()).getParent().getParent().getParent().getParent());
+					lwin.selectedSprite = js.si;
+					
+                	System.out.println("Clicked point " + js.getLocation() + ", width" + js.getWidth() + " selected " + js.si);
+                	
+                	lwin.DrawLevel();
+				}
+				
                 @Override
                 public void mousePressed(MouseEvent e) {
                 	JSprite js = (JSprite) e.getComponent();
-                	System.out.println("Clicked point " + js.getLocation() + ", width" + js.getWidth());
+                	System.out.println("Pressed point " + js.getLocation() + ", width" + js.getWidth());
                 	
                 	// Check bounds
                     java.awt.Point p = new java.awt.Point(e.getLocationOnScreen());
                     SwingUtilities.convertPointFromScreen(p, e.getComponent());
                     
-                    if(!e.getComponent().contains(p)) {return;}
+                    //if(!e.getComponent().contains(p)) {return;}
                     
                 	//Point l = js.getLocation();
                 	x_start = e.getXOnScreen();
@@ -154,13 +150,13 @@ public class LayoutWindow extends JFrame{
 
                 	JSprite js = (JSprite) e.getComponent();
 
-                	System.out.println("Point Before" + js.getLocation() );
+                	//System.out.println("Point Before" + js.getLocation() );
                 	
                 	Point p = js.getLocation();
                 	js.myX = p.x + (x_end - x_start);
                 	js.myY = p.y + (y_end - y_start);
                 	
-                	System.out.println("Point After" + js.getLocation() );
+                	//System.out.println("Point After" + js.getLocation() );
                 	
                 	repaint();
                 	
@@ -196,15 +192,6 @@ public class LayoutWindow extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 	}
-	
-	
-//	public static void main(String args[]){
-//		MainWindow win = new MainWindow();
-//		win.setVisible(true);
-//		win.setSize(win.width, win.height);
-//		  
-//		win.setDefaultCloseOperation(EXIT_ON_CLOSE);
-//	}
 
 }
 
@@ -218,6 +205,7 @@ class JSprite extends JPanel {
 	  public int myY;
 	  public Dimension mySize;
 	  private LBDatabase db = LBDatabase.getInstance();
+	  public  boolean isSelected = false;
 
 
 	  public JSprite(Image img, LBSpriteInstance si) {
@@ -237,6 +225,11 @@ class JSprite extends JPanel {
 		  
 		  super.paintComponent(g);
 		  g.drawImage(img, 0, 0, null);
+		  
+		  if(this.isSelected ){
+			  g.setColor(new Color(255,0,0));
+			  g.drawRect(1, 1, this.getWidth()-2, this.getHeight()-2);
+		  }
 	  }
 	  
 	  public Dimension getImageSize(){
@@ -244,3 +237,5 @@ class JSprite extends JPanel {
 	  }
 
 }
+
+
