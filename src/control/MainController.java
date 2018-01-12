@@ -46,6 +46,16 @@ public class MainController {
 		//System.out.println("MC:Key Typed " + e.getKeyChar());
 		
 		switch(e.getKeyChar()){
+			case KeyEvent.VK_BACK_SPACE:{
+				System.out.println("DELETE!!!");
+				
+				lwin.level.SpriteInstanceArray.remove(lwin.selectedSprite);
+				lwin.selectedSprite = null;
+				
+				lwin.DrawLevel();
+				
+				break;
+			}
 			case 'l':{
 				int nextLevel = db.LevelArray.size() + 1;
 				int il = db.CreateNewLevel("Level_0" + nextLevel, nextLevel);
