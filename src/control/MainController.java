@@ -56,6 +56,18 @@ public class MainController {
 				
 				break;
 			}
+			case 'g':{
+				int nextGroupIdx = db.GroupArray.size() + 1;
+				int ig = db.CreateNewGroup("Group_0" + nextGroupIdx);
+				
+				gwin.activeGroup = ig;
+				
+				//swin.DisplaySpriteList();
+				//vwin.DisplayLevelList();
+				gwin.DisplayGroupList();
+				break;
+				
+			}
 			case 'l':{
 				int nextLevel = db.LevelArray.size() + 1;
 				int il = db.CreateNewLevel("Level_0" + nextLevel, nextLevel);
@@ -143,6 +155,12 @@ public class MainController {
 	public int getSelectedSpriteIndex(){
 
 		return swin.spriteList.getSelectedIndex();
+	}
+
+	public int getSelectedGroupIndex() {
+
+		return gwin.groupList.getSelectedIndex();
+
 	}
 
 

@@ -29,11 +29,14 @@ public class LayoutWindow extends JFrame{
 	
 	public int width = 1280;
 	public int height = 720;
-	public int activeLevel = 0;
+	
 	public SpriteWindow swin;
 	private LBDatabase db = LBDatabase.getInstance();
+	
 	public LBLevel level;
+	public int activeLevel = 0;
 	public LBSpriteInstance selectedSprite = null;
+	
 	
 	public MainController mc;
 	
@@ -45,11 +48,18 @@ public class LayoutWindow extends JFrame{
 			int activeSprite = win.mc.getSelectedSpriteIndex();
 			if(activeSprite < 0){ return; }
 			
-			level.addSprite(activeSprite, e.getX(), e.getY());
+			int sii = level.addSprite(activeSprite, e.getX(), e.getY());
+			
+			//Add to group
+			int activeGroup = win.mc.getSelectedGroupIndex();
+			if(activeGroup >= 0){
+				level.SpriteInstanceArray.get(sii).AddToGroup(db.GroupArray.get(activeGroup));
+			}
 			
 			win.DrawLevel();
-			
+
 			System.out.println("Add new Object! " + e.getX() + ", " + e.getY());
+			System.out.println("\t" + level.SpriteInstanceArray.get(sii));
 		}
 	};
 	

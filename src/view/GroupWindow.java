@@ -3,6 +3,8 @@ package view;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import control.MainController;
 import model.LBDatabase;
@@ -34,6 +36,22 @@ public class GroupWindow extends JFrame{
 		  
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	
+		groupList.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				JList<?> list = (JList<?>)e.getSource();
+				System.out.println("Group WIndow Selection changed! \n\t" + e.toString() + "\n\t" + list.getSelectedIndex());
+				
+//				LevelWindow vwin = (LevelWindow)list.getParent().getParent().getParent().getParent();
+//				vwin.activeLevel = list.getSelectedIndex();
+//				
+//				mc.levelSelectionChangeHandler(e);
+				
+			}
+			
+		});
+		
 		//this.addKeyListener(kl);
 	}
 	

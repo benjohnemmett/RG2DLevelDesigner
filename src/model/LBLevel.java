@@ -18,10 +18,19 @@ public class LBLevel implements java.io.Serializable {
 		this.name = name;
 		this.number = number;
 	}
-	
-	public void addSprite(int DBIndex, int x, int y) {
+	/**
+	 * Creates a new sprite instance from the sprite at the given DB Index. The new sprite is placed at the specified x,y location. The index of the new sprite instance is returned.
+	 * 
+	 * @param DBIndex
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public int addSprite(int DBIndex, int x, int y) {
 		LBSpriteInstance si = new LBSpriteInstance(DBIndex, x, y);
 		this.SpriteInstanceArray.add(si);
+		
+		return this.SpriteInstanceArray.size() - 1;
 	}
 	
 	public String toString(){
