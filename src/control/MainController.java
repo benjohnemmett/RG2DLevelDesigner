@@ -7,6 +7,8 @@ import javax.swing.event.ListSelectionEvent;
 
 import model.LBCodeGen;
 import model.LBDatabase;
+import model.LBGroup;
+import model.LBSpriteInstance;
 import view.GroupWindow;
 import view.LayoutWindow;
 import view.LevelWindow;
@@ -92,6 +94,7 @@ public class MainController {
 				lwin.DrawLevel();
 				swin.DisplaySpriteList();
 				vwin.DisplayLevelList();
+				gwin.DisplayGroupList();
 				break;
 				
 			} 
@@ -131,6 +134,23 @@ public class MainController {
 		
 	}
 	
+	public void groupSelectionChangeHandler(){
+		//Get active group
+		int ag = this.gwin.groupList.getSelectedIndex();
+		
+		//Check if valid selection is made
+		if(ag < 0){
+			return;
+		}
+		
+		LBGroup g = db.GroupArray.get(ag);
+		
+		//set active sprite instance to selected group
+		if(lwin.selectedSprite != null){
+			lwin.selectedSprite.group = g;
+		}
+		
+	}
 	
 	/**
 	 * Checks the sprite window and returns true if a sprite is selected. 
@@ -162,6 +182,20 @@ public class MainController {
 		return gwin.groupList.getSelectedIndex();
 
 	}
+
+	public void spriteInstanceClickHandler(LBSpriteInstance si) {
+		
+		int groupIdx = db.GroupArray.indexOf(si.group);
+
+		if(groupIdx < 0){
+			gwin.groupList.clearSelection();;
+		} else {
+			gwin.groupList.setSelectedIndex(groupIdx);
+		}
+		
+		
+	}
+
 
 
 	

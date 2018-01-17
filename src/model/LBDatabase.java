@@ -123,12 +123,14 @@ public class LBDatabase implements java.io.Serializable {
 			obj_out.writeObject(this.GamePath);
 			obj_out.writeObject(this.SpriteArray);
 			obj_out.writeObject(this.LevelArray);
+			obj_out.writeObject(this.GroupArray);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
     }
     
-    public void loadDatabase(String filename){
+    @SuppressWarnings("unchecked")
+	public void loadDatabase(String filename){
 		// Read from disk using FileInputStream
 		FileInputStream f_in = null;
 		try {
@@ -193,6 +195,23 @@ public class LBDatabase implements java.io.Serializable {
 		{
 			// Cast object
 			this.LevelArray = (ArrayList<LBLevel>) obj3;
+		}
+
+
+		// Read Group Array
+		Object obj4 = null;
+		try {
+			obj4 = obj_in.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (obj4 instanceof ArrayList<?>)
+		{
+			// Cast object
+			this.GroupArray = (ArrayList<LBGroup>) obj4;
 		}
 		
 		

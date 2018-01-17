@@ -41,13 +41,11 @@ public class GroupWindow extends JFrame{
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				JList<?> list = (JList<?>)e.getSource();
-				System.out.println("Group WIndow Selection changed! \n\t" + e.toString() + "\n\t" + list.getSelectedIndex());
+				System.out.println("Group Window Selection changed! \n\t" + e.toString() + "\n\t" + list.getSelectedIndex());
 				
-//				LevelWindow vwin = (LevelWindow)list.getParent().getParent().getParent().getParent();
-//				vwin.activeLevel = list.getSelectedIndex();
-//				
-//				mc.levelSelectionChangeHandler(e);
-				
+				GroupWindow gwin = (GroupWindow)list.getParent().getParent().getParent().getParent();
+				gwin.mc.groupSelectionChangeHandler();
+
 			}
 			
 		});

@@ -128,15 +128,17 @@ public class LayoutWindow extends JFrame{
                     LayoutWindow lwin = ((LayoutWindow)((view.JSprite) e.getComponent()).getParent().getParent().getParent().getParent());
 					lwin.selectedSprite = js.si;
 					
-                	System.out.println("Clicked point " + js.getLocation() + ", width" + js.getWidth() + " selected " + js.si);
-                	
+                	//System.out.println("Clicked point " + js.getLocation() + ", width" + js.getWidth() + " selected " + js.si);
+					System.out.println("Sprite Instance " + js.si);
+					lwin.mc.spriteInstanceClickHandler(js.si);
+					
                 	lwin.DrawLevel();
 				}
 				
                 @Override
                 public void mousePressed(MouseEvent e) {
                 	JSprite js = (JSprite) e.getComponent();
-                	System.out.println("Pressed point " + js.getLocation() + ", width" + js.getWidth());
+                	//System.out.println("Pressed point " + js.getLocation() + ", width" + js.getWidth());
                 	
                 	// Check bounds
                     java.awt.Point p = new java.awt.Point(e.getLocationOnScreen());
